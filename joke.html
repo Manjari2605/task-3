@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joke Api</title>
+</head>
+<body>
+    <button onclick="getJoke()" id="random">Joke</button>
+    <p id="joke"></p>
+    <script>
+       async function getJoke() {
+    try {
+
+        let res = await fetch(
+            `https://v2.jokeapi.dev/joke/Any`
+        );
+
+        let joke = await res.json();
+        let msg=joke.joke;
+        let j=document.getElementById("joke") 
+        j.textContent=msg;
+
+    }
+    catch(error) {
+        document.getElementById("dog").innerHTML =
+            "<h2>Dog not found!</h2>";
+    }
+}
+    </script>
+</body>
+</html>

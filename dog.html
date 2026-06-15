@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon Product Search</title>
+<style>
+    
+    button{
+        background-color:gold;
+    }
+    img{
+        margin-top:20px;
+        width:200px;
+        height:200px;
+    }
+     
+    
+</style>
+
+</head>
+<body>
+
+<div class="search-box">
+    <input type="text" id="dogId" placeholder="Enter dog breed ">
+    <button  onclick="getDog()">Search</button>
+</div>
+
+<div id="dog"></div>
+
+<script>
+async function getDog() {
+    try {
+        let input = document.getElementById("dogId").value;
+
+        let res = await fetch(
+            `https://dog.ceo/api/breed/${input}/images/random`
+        );
+
+        let dog = await res.json();
+
+        document.getElementById("dog").innerHTML = `
+            <div class="card">
+                <img src="${dog.message}" alt="Dog Image">
+            </div>
+        `;
+    }
+    catch(error) {
+        document.getElementById("dog").innerHTML =
+            "<h2>Dog not found!</h2>";
+    }
+}
+</script>
+
+</body>
+</html>

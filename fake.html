@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon Product Search</title>
+<style>
+    .card{
+        display:flex;
+        justify-content: center;
+        border-radius:10px;
+        border: 2px solid;
+        border-color:gold;
+        margin:5px;
+    }
+    button{
+        background-color:gold;
+    }
+    img{
+        margin-top:20px;
+        width:200px;
+        height:200px;
+    }
+     
+    
+</style>
+
+</head>
+<body>
+
+<div class="search-box">
+    <input type="number" id="productId" placeholder="Enter Product ID ">
+    <button  onclick="getProduct()">Search</button>
+</div>
+
+<div id="product"></div>
+
+<script>
+function getProduct(){
+    let id = document.getElementById("productId").value;
+
+    fetch(`https://fakestoreapi.com/products/${id}`)
+    .then(res => res.json())
+    .then(product => {
+
+        document.getElementById("product").innerHTML = `
+            <div class="card">
+                <img src="${product.image}" alt="${product.title}">
+                
+                <div class="details">
+                    <h2 class="title">${product.title}</h2>
+
+                    <p class="rating">
+                        ${product.rating.rate}
+                        (${product.rating.count} reviews)
+                    </p>
+
+                    <h3 class="price">$${product.price}</h3>
+
+                    <p class="desc">${product.description}</p>
+
+                    <p><strong>Category:</strong> ${product.category}</p>
+                    <br>
+
+                    <button class="cart-btn">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        `;
+    })
+    .catch(() => {
+        document.getElementById("product").innerHTML =
+        "<h2>Product not found!</h2>";
+    });
+}
+</script>
+
+</body>
+</html>

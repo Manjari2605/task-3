@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pokemon Card</title>
+
+<style>
+    body{
+        font-family: Arial;
+        text-align:center;
+        background-color:#f4f4f4;
+    }
+
+    h1{
+        color:#333;
+    }
+
+    input{
+        padding:10px;
+        width:200px;
+        border-radius:5px;
+        border:1px solid gray;
+    }
+
+    button{
+        padding:10px 20px;
+        border:none;
+        background-color:#ffcb05;
+        color:black;
+        font-weight:bold;
+        border-radius:5px;
+    }
+
+    button:hover{
+        background-color:#f5b700;
+    }
+
+    .card{
+        width:320px;
+        margin:20px auto;
+        background:white;
+        border-radius:10px;
+        padding:20px;
+        box-shadow:0px 0px 10px lightgray;
+    }
+
+    .card img{
+        width:180px;
+        height:180px;
+    }
+
+    .card h2{
+        color:#2a75bb;
+    }
+
+    .info{
+        text-align:left;
+        margin-top:10px;
+    }
+
+    .info p{
+        margin:5px 0;
+    }
+
+    .stats{
+        margin-top:15px;
+        text-align:left;
+    }
+
+    .stats h3{
+        margin-bottom:10px;
+    }
+
+    .stats p{
+        margin:5px 0;
+    }
+</style>
+
+</head>
+<body>
+
+<h1>Pokemon Search</h1>
+
+<input
+    type="text"
+    id="pokiname"
+    placeholder="Enter Pokemon Name"
+/>
+
+<button onclick="pokidata()">
+    Search
+</button>
+
+<div id="card"></div>
+
+<script>
+
+async function pokidata(){
+
+    try{
+
+        let name =
+        document.getElementById("pokiname")
+        .value
+        .toLowerCase();
+
+        let response = await fetch(
+            `https://pokeapi.co/api/v2/pokemon/${name}`
+        );
+
+        if(!response.ok){
+            throw new Error("Pokemon Not Found");
+        }
+
+        let data = await response.json();
+
+        document.getElementById("card").innerHTML = `
+
+        <div class="card">
+
+            <h2>${data.name.toUpperCase()}</h2>
+
+            <img src="${data.sprites.front_default}" alt="pokemon">
+
+            <div class="info">
+                <p><b>Height:</b> ${data.height}</p>
+                <p><b>Weight:</b> ${data.weight}</p>
+                <p><b>Base Experience:</b> ${data.base_experience}</p>
+            </div>
+
+            <div class="stats">
+
+                <h3>Stats</h3>
+
+                <p><b>HP:</b>
+                ${data.stats[0].base_stat}</p>
+
+                <p><b>Attack:</b>
+                ${data.stats[1].base_stat}</p>
+
+                <p><b>Defense:</b>
+                ${data.stats[2].base_stat}</p>
+
+                <p><b>Special Attack:</b>
+                ${data.stats[3].base_stat}</p>
+
+                <p><b>Special Defense:</b>
+                ${data.stats[4].base_stat}</p>
+
+                <p><b>Speed:</b>
+                ${data.stats[5].base_stat}</p>
+
+            </div>
+
+        </div>
+        `;
+
+    }
+    catch(error){
+
+        document.getElementById("card").innerHTML = `
+            <h2>Pokemon Not Found!</h2>
+        `;
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pokemon Battle Simulator</title>
+<style>
+body{
+    font-family: Arial;
+    text-align:center;
+}
+
+.battle-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:50px;
+    margin:20px;
+}
+
+.pokemon-card{
+    border:1px solid black;
+    padding:15px;
+    width:250px;
+    border-radius:10px;
+}
+
+img{
+    width:150px;
+    height:150px;
+}
+
+.power{
+    font-weight:bold;
+    color:green;
+}
+
+button{
+    padding:10px 20px;
+    cursor:pointer;
+}
+
+#winner{
+    margin:20px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+#battleLog{
+    border:1px solid black;
+    padding:15px;
+    width:60%;
+    margin:auto;
+    min-height:80px;
+}
+</style>
+</head>
+<body>
+<h1> Battle Wireframe </h1>
+
+<button onclick="startBattle()">Start </button>
+
+<div class="battle-container">
+
+    <div class="pokemon-card">
+        <h2 id="name1">Pokemon 1</h2>
+        <img id="img1">
+        <p class="power" id="power1"></p>
+    </div>
+
+    <h1>VS</h1>
+
+    <div class="pokemon-card">
+        <h2 id="name2">Pokemon 2</h2>
+        <img id="img2">
+        <p class="power" id="power2"></p>
+    </div>
+
+</div>
+
+<div id="winner"></div>
+
+<div id="battleLog">
+    Click "Start Battle" to begin!
+</div>
+<script>
+async function getPokemon(id) {
+    let res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${id}`
+    );
+
+    return await res.json();
+}
+
+async function startBattle() {
+
+    let p1Id = Math.floor(Math.random() * 100) + 1;
+    let p2Id = Math.floor(Math.random() * 100) + 1;
+
+    let p1 = await getPokemon(p1Id);
+    let p2 = await getPokemon(p2Id);
+
+    let a1 = Math.floor(Math.random() * 100) + 1;
+    let a2 = Math.floor(Math.random() * 100) + 1;
+
+    name1.textContent = p1.name;
+    name2.textContent = p2.name;
+
+    img1.src = p1.sprites.front_default;
+    img2.src = p2.sprites.front_default;
+
+    power1.textContent = "Power: " + a1;
+    power2.textContent = "Power: " + a2;
+
+    let result;
+
+    if (a1 > a2) {
+        result = p1.name + " Wins!";
+    }
+    else if (a2 > a1) {
+        result = p2.name + " Wins!";
+    }
+    else {
+        result = "Draw!";
+    }
+
+    winner.textContent = result;
+
+    battleLog.innerHTML = `
+        ${p1.name} attacked with ${a1}<br>
+        ${p2.name} attacked with ${a2}<br><br>
+        <b>${result}</b>
+    `;
+}
+</script>
+</body>
+</html>
